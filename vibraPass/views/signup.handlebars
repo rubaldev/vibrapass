@@ -1,0 +1,94 @@
+<style>
+    <style>body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: large;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    #principale {
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 10px;
+        border: none;
+      
+        color:white;
+    }
+
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+</style>
+
+<video autoplay loop muted>
+    <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
+    prends pas en charge le type de video
+</video>
+<div id="principale">
+    <div id="section">
+        <div class=" w-60 h-90  d-flex justify-content-center align-items-center px-5">
+            <div class="w-100 h-100 d-flex justify-content-center align-items-center ms-5">
+                <form action="/signup"
+                    class="container-fluid w-100 h-100 rounded-4 px-4 py-5 d-flex flex-column justify-content-center shadow"
+                    method="post">
+                    <div class="container-fluid">
+                        <div class="d-lg-flex align-items-start gap-2">
+                            <div class="mb-3 d-flex flex-column align-items-start">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" id="nom" class="form-control rounded-4 nom" placeholder="Votre nom"
+                                    name="nom">
+                            </div>
+                            <div class="mb-3 d-flex flex-column align-items-start"> <label for="postnom"
+                                    class="form-label">PostNom</label>
+                                <input type="text" id="postnom" class="form-control rounded-4 postnom"
+                                    placeholder="Votre postnom" name="postnom">
+                            </div>
+                            <div class="mb-3 d-flex flex-column align-items-start"> <label for="prenom"
+                                    class="form-label">Prénom</label>
+                                <input type="text" id="prenom" class="form-control rounded-4 prenom"
+                                    placeholder="Votre prénom" name="prenom">
+                            </div>
+                        </div>
+                        <div class="d-lg-flex align-items-start gap-2">
+                            <div class="mb-3 d-flex flex-column align-items-start">
+                                <label for="email" class="form-label">Adresse email</label>
+                                <input type="email" id="email" name="email" class="form-control rounded-4 email"
+                                    aria-describedby="emailHelp" placeholder="Votre email">
+                            </div>
+                            <div class="mb-3 d-flex flex-column align-items-start">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" name="password"
+                                    class="form-control rounded-4 password" placeholder="Votre mot de passe">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sexe" class="form-label">sexe</label><br>
+                                <input type="text" id="sexe" name="sexe" class="form-control rounded-4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid d-flex justify-content-center align-content-center gap-4">
+                        <button type="reset" class="btn bg-white px-3 py-2 rounded-4 shadow">Tout effacer</button>
+                        <button type="submit" class="btn btn-primary px-4 py-2 rounded-4 shadow"
+                            onclick="getValuForm()">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="../public/scrypte/signup.js"></script>
