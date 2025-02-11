@@ -1,0 +1,231 @@
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    #navigator-bar {
+        width: 100vw;
+        height: 10%;
+        display: flex;
+        justify-content: center;
+        background-color: black;
+        color: white;
+    }
+
+    #logo-bussiness {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.5rem;
+    }
+
+    .others-button {
+        border: none;
+        border-radius: 20px;
+        margin-left: 10px;
+        padding: 9px;
+        background-color: transparent;
+        width: max-content;
+        height: inherit;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: white;
+    }
+
+    p,
+    ul,
+    h2 {
+        color: white;
+    }
+
+    h1 {
+        color: black;
+    }
+
+    #section {
+        width: 100%;
+        height: 100vh;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    #first-section {
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        font-size: 1rem;
+        margin-top: 10px;
+        width: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: transparent;
+
+    }
+
+    #second-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+    }
+
+    .container li {
+        list-style-type: none;
+        width: 80%;
+        height: 30px;
+        background-color: #4d62ea;
+        margin-top: 8px;
+        border: none;
+        border-radius: 15px;
+    }
+
+    .container {
+        width: 25%;
+        height: 80%;
+        border: none;
+        border-radius: 10px;
+        margin: 20px;
+        background-color: rgb(71, 69, 69);
+        text-align: center;
+    }
+
+    span {
+        color: #4d62ea;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2rem;
+    }
+
+    #pass {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.5rem;
+        color: white;
+    }
+    #profile{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction:row;
+        margin-left: 15px;
+        background-color: white;
+        border: black 1px solid;
+        width:max-content;
+        height:99%;
+        border-radius: 30px;
+    }
+    img{
+        width: inherit;
+        height: inherit;
+        border-radius: 50%;
+        margin: 5px;
+    }
+    
+</style>
+<video autoplay loop muted>
+    <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
+    prends pas en charge le type de video
+</video>
+<nav id="navigator-bar" class=" navbar navbar-expand-lg w-100 d-flex justify-content-between">
+    <span id="profile"><img src="/font/La-cle-spirituelle03.jpg" alt="">{{{img}}}</span>
+    <div class="container-fluid d-flex align-content-center justify-content-center mx-lg-5 w-100">
+        <div class="navbar-brand title">
+            <div id="logo-bussiness">
+                <span>Vibra</span><span id="pass">pass</span>
+            </div>
+        </div>
+        <div id="" class="navbar-nav container-fluid d-flex justify-content-end">
+            <ul class="nav container-fluid w-100 d-flex justify-content-end d-none d-lg-flex">
+                <li class="nav-item">
+                    <a  onclick="getNewPassword()">New Password</a>
+                </li>
+                <li class="nav-item">
+                    <a onclick="getListedAllPassWord()">my passwords</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Trois</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="navbar-nav container-fluid d-flex justify-content-end">
+            <ul class="nav  w-100 d-flex justify-content-end d-none d-lg-flex">
+                <li class="nav-item">
+                    <button class="others-button" onclick="getLogin()">Login</button>
+                </li>
+                <li class="nav-item">
+                    <button class="others-button" onclick="getSignup()"> Sign Up</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<section id="section">
+    <div id="first-section">
+        <div>
+            <h1>Take control of your digital security with our password manager</h1>
+        </div>
+        <div>
+            <p>Collaboration is made easy our cloud storage plateform. You can easily share files with freinds,
+                family, or colleagues, and even work on them together in real-time. </p>
+        </div>
+    </div>
+    <div id="second-section">
+        <div class="container" id="statistic-container">
+            <p>ici nous allons afficher les statistiques des utilisateurs</p>
+        </div>
+        <div class="container" id="list-password">
+            <ul>
+                
+            </ul>
+        </div>
+        <div class="container" id="list-users">
+            <ul>
+                
+            </ul>
+        </div>
+        <div class="container" id="notice-container">
+            <h2>Bienvenue !</h2>
+            <p>Merci d'avoir choisi notre application de gestion de mots de passe. Ce guide vous aidera à naviguer
+                dans les fonctionalités principales et à tirer le meilleur parti de votre experience.</p>
+        </div>
+    </div>
+</section>
+<script>
+    function getLogin(){
+        window.location.href ='/login';
+    }
+    function getSignup(){
+        window.location.href ='/signup';
+    }
+   function getNewPassword(){
+    window.location.href = '/newpassword';
+   }
+   function getListedAllPassWord(){
+    window.location.href = '/listedallpassword';
+   }
+</script>

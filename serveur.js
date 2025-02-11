@@ -38,6 +38,11 @@ app.get('/newpassword', (req, res) => {
         title: "vibrapass-newpassord"
     })
 });
+const items = [
+  { id: 1, name: 'Item 1' },
+  { id: 2, name: 'Item 2' },
+  { id: 3, name: 'Item 3' }
+];
 //route pour renvoyer le listedallpassword
 app.get('/listedallpassword', async (req, res) => {
    // const items = await db.getPassWord(req.session.id_user);
