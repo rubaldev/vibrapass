@@ -12,7 +12,11 @@ const sessionMiddleware = session({
     secret: 'mon_secret', resave: true, saveUninitialized: true, cookie: { secure: false }
 })
 
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Quelque chose a mal tourné!')
 
+})
 app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -20,6 +24,8 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
+
+items = [];
 // route pour renvoyer le login
 app.get('/login', (req, res) => {
     res.render('login', {
@@ -32,26 +38,49 @@ app.get('/signup', (req, res) => {
         title: 'vibrapass-signup'
     })
 });
+
 // route pour renvoyer le new password
-app.get('/newpassword', (req, res) => {
-    res.render('newpassword', {
-        title: "vibrapass-newpassord"
-    })
-});
-const items = [
-  { id: 1, name: 'Item 1' },
-  { id: 2, name: 'Item 2' },
-  { id: 3, name: 'Item 3' }
-];
+app.get('/newpassword', async (req, res) => {
+    try {
+        const itemsbd = await db.getPassWord(req.session.id_user);
+        items = []
+        itemsbd.forEach(element => {
+            mObjet = {
+                id: element.passwordsite,
+                name: element.website,
+            }
+            items.push(mObjet)
+        });
+        res.render('newpassword', {
+            title: "vibrapass-newpassword",
+            items
+        })
+    } catch (error) {
+        next(error)
+    }
+
+})
+
 //route pour renvoyer le listedallpassword
 app.get('/listedallpassword', async (req, res) => {
-   // const items = await db.getPassWord(req.session.id_user);
-    res.render('listedallpassword', {
-        title: "vibrapass-listedallpassword",
-        items
-    })
-    console.log(items);
-    
+    try {
+        const itemsbd = await db.getPassWord(req.session.id_user);
+        items = []
+        itemsbd.forEach(element => {
+            mObjet = {
+                id: element.passwordsite,
+                name: element.website,
+            }
+            items.push(mObjet)
+        });
+        res.render('listedallpassword', {
+            title: "vibrapass-listedallpassword",
+            items
+        })
+    } catch (error) {
+        next(error)
+    }
+
 });
 // route pour recuperer dans le signup
 app.post('/signup', async (req, res) => {
@@ -65,16 +94,17 @@ app.post('/signup', async (req, res) => {
         const deleteUser = await db.deleteUser(email, password);
         if (deleteUser) {
             const status = await db.insertIntoDb(name, secondname, christname, email, password, sexe);
-            if (status) {
-                req.session.id_user = results.insertId;
+            if (status ==false) {
+                console.log(status)
+            }
+            else {
+                req.session.id_user = status.insertId;
                 res.render('home', {
                     title: christname + " " + name,
                     img: christname + " " + name
                 })
-                console.log(deleteUser);
-            }
-            else {
-                res.render(status)
+                console.log(status);
+                
             }
         }
     } catch (error) {
@@ -87,6 +117,7 @@ app.post('/signup', async (req, res) => {
 app.get('/home', (req, res) => {
     res.render('home', {
         title: "vibrapass-home",
+
     })
 })
 //route pour recuperer dans login
@@ -95,16 +126,18 @@ app.post('/login', async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const status = await db.verifyUser(email, password);
-        req.session.id_user = status[0].id_user;
-        if (!status.isEmpty) {
+      //  req.session.id_user = status[0].id_user;
+        if (status.length !== 0) {
+            console.log(status);
             res.render('home', {
                 title: status[0].christ_name + " " + status[0].name_user,
                 img: status[0].christ_name + " " + status[0].name_user,
             })
+            
         }
         else {
             console.log(status);
-            res.render(status)
+            res.send(status)
         }
 
     } catch (error) {
@@ -123,20 +156,24 @@ app.post('/newpass', async (req, res) => {
         const password = req.body.password;
         const status = await db.insertUserTemplate(email, websitelink, category, password, req.session.id_user)
         if (status) {
-            const listPassWord = await db.getPassWord(req.session.id_user);
+            const itemsbd = await db.getPassWord(req.session.id_user);
+            items = []
+            itemsbd.forEach(element => {
+                mObjet = {
+                    id: element.passwordsite,
+                    name: element.website,
+                }
+                items.push(mObjet)
+            });
             res.render('newpassword', {
                 title: "vibrapass-newpassword",
-                pass: listPassWord
+                items
             })
         }
-        else {
-
-        }
     } catch (error) {
-
+        next(error)
     }
-
-});
+})
 // route qui renvoi la page d'accueil(index)
 app.get('/', (req, res) => {
     res.render('index',

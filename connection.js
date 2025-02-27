@@ -33,7 +33,8 @@ const insertIntoDb = (name, secondname, christname, email, password, sexe) => {
                 console.log("une erreur s'est produite", err);
                 reject(false);
             } else {
-                resolve(true);
+                console.log("envoi reuçu!!");
+                resolve(results);
             }
         });
     });
@@ -48,6 +49,8 @@ const verifyUser = async (email, password) => {
             }
             else {
                 resolve(results);
+                console.log(results);
+                
             }
         })
     })
@@ -80,7 +83,7 @@ const deleteUser = (email, password) => {
         })
     })
 }
-const getPassWord = (id_user = 135) => {
+const getPassWord = (id_user = 2) => {
     const request = `SELECT * FROM template where id_user = '${id_user}'`;
     return new Promise((resolve, reject) => {
         connection.query(request, (err, results) => {
@@ -94,18 +97,19 @@ const getPassWord = (id_user = 135) => {
     })
 }
 const insertUserTemplate = (email, website, category, passwordsite, id_user) => {
-    const request = `INSERT INTO template(email,website,category,passwordsite,id_user) VALUES('${email}','${website}','${category}','${passwordsite}','${id_user}')`
-    return new Promise((resolve, reject) => {
-        connection.query(request, (err, results) => {
-            if (err) {
-                reject(false)
-                console.log(err)
-            } else {
-                resolve(true)
-            }
+        const request = `INSERT INTO template(email,website,category,passwordsite,id_user) VALUES('${email}','${website}','${category}','${passwordsite}','${id_user}')`
+        return new Promise((resolve, reject) => {
+            connection.query(request, (err, results) => {
+                if (err) {
+                    reject(false)
+                    console.log(err)
+                } else {
+                    resolve(true)
+                }
+            })
         })
-    })
-}
+    } 
+    
 module.exports = {
     selectAll,
     insertIntoDb,
