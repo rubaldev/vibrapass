@@ -7,7 +7,7 @@ name_user varchar(30) NOT NULL,
 second_name varchar(30) NOT NULL,
 christ_name varchar(30) NOT NULL,
 email varchar(500) NOT NULL UNIQUE,
-password varchar(10) NOT NULL,
+password varchar(200) NOT NULL,
 sexe char(1))engine=innoDB;
 describe user;
 

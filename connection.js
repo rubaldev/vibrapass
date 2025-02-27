@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -27,33 +28,55 @@ const selectAll = () => {
 };
 const insertIntoDb = (name, secondname, christname, email, password, sexe) => {
     return new Promise((resolve, reject) => {
-        var request = `INSERT INTO user(name_user,second_name,christ_name,email,password,sexe) VALUES('${name}', '${secondname}', '${christname}', '${email}', '${password}','${sexe}')`;
-        connection.query(request, (err, results) => {
+        bcrypt.hash(password, 10, function (err, hash) {
             if (err) {
-                console.log("une erreur s'est produite", err);
-                reject(false);
-            } else {
-                console.log("envoi reuçu!!");
-                resolve(results);
+                console.log('erreur lors du hashage de mot de passe', err);
+                return;
             }
+            password = hash;
+
+            var request = `INSERT INTO user(name_user,second_name,christ_name,email,password,sexe) VALUES('${name}', '${secondname}', '${christname}', '${email}', '${password}','${sexe}')`;
+            connection.query(request, (err, results) => {
+                if (err) {
+                    console.log("une erreur s'est produite", err);
+                    reject(false);
+                } else {
+                    console.log("envoi reuçu!!");
+                    resolve(results);
+                }
+            });
         });
+
+
     });
 };
 const verifyUser = async (email, password) => {
-    var request = `SELECT * FROM user WHERE email = '${email}' AND password = '${password}'`;
-    return new Promise((resolve, reject) => {
-        connection.query(request, (err, results) => {
-            if (err) {
-                reject(results)
-                console.log(err);
-            }
-            else {
-                resolve(results);
-                console.log(results);
-                
-            }
+    try {
+        var request = `SELECT * FROM user WHERE email = '${email}'`;
+        return new Promise((resolve, reject) => {
+            connection.query(request, (err, results) => {
+                if (err) {
+                    console.log('erreur lors de la verification dans la base de données',err);
+                } else {
+                    bcrypt.compare(password, results[0].password, function (err, result) {
+                        if (err) {
+                            console.log('Erreur lors de la comparaison', err);
+                        }
+                        if (result) {
+                            resolve(results);
+                        }
+                        else {
+                            console.log('mot de passe est incorrect');
+                            reject(results)
+                        }
+                    })
+                }
+            })
         })
-    })
+    } catch (error) {
+
+    }
+
 
 };
 /*
@@ -97,19 +120,19 @@ const getPassWord = (id_user = 2) => {
     })
 }
 const insertUserTemplate = (email, website, category, passwordsite, id_user) => {
-        const request = `INSERT INTO template(email,website,category,passwordsite,id_user) VALUES('${email}','${website}','${category}','${passwordsite}','${id_user}')`
-        return new Promise((resolve, reject) => {
-            connection.query(request, (err, results) => {
-                if (err) {
-                    reject(false)
-                    console.log(err)
-                } else {
-                    resolve(true)
-                }
-            })
+    const request = `INSERT INTO template(email,website,category,passwordsite,id_user) VALUES('${email}','${website}','${category}','${passwordsite}','${id_user}')`
+    return new Promise((resolve, reject) => {
+        connection.query(request, (err, results) => {
+            if (err) {
+                reject(false)
+                console.log(err)
+            } else {
+                resolve(true)
+            }
         })
-    } 
-    
+    })
+}
+
 module.exports = {
     selectAll,
     insertIntoDb,

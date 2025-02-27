@@ -128,18 +128,15 @@ app.post('/login', async (req, res) => {
         const status = await db.verifyUser(email, password);
       //  req.session.id_user = status[0].id_user;
         if (status.length !== 0) {
-            console.log(status);
             res.render('home', {
                 title: status[0].christ_name + " " + status[0].name_user,
                 img: status[0].christ_name + " " + status[0].name_user,
             })
-            
         }
         else {
             console.log(status);
             res.send(status)
         }
-
     } catch (error) {
         console.log(error);
 
