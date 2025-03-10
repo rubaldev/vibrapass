@@ -32,6 +32,13 @@
         object-fit: cover;
         z-index: -1;
     }
+    #message{
+        margin-top: 1rem;
+        margin-left:12rem;
+        font-size: 15px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(233, 97, 52);
+    }
 </style>
 
 <video autoplay loop muted>
@@ -85,6 +92,7 @@
                         <button type="submit" class="btn btn-primary px-4 py-2 rounded-4 shadow"
                             onclick="getValuForm()">Envoyer</button>
                     </div>
+                    <span id="message">{{message}}</span>
                 </form>
             </div>
 

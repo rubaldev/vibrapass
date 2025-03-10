@@ -6,6 +6,20 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
 
+    #logout {
+        background-color: rgb(2, 57, 7);
+        border-radius: 15px;
+        width: 100px;
+        height: 50px;
+        text-align: center;
+        padding: 10px;
+        box-shadow: 0px 1px 1px white;
+    }
+
+    #logout:hover {
+        background-color: rgb(93, 31, 7);
+    }
+
     video {
         position: absolute;
         top: 0;
@@ -49,6 +63,15 @@
         text-decoration: none;
         color: white;
     }
+
+    h3 {
+        color: rgb(233, 77, 10);
+    }
+
+    #message {
+        color: rgb(7, 85, 27);
+    }
+
 
     p,
     ul,
@@ -123,27 +146,28 @@
         font-size: 1.5rem;
         color: white;
     }
-    #profile{
+
+    #profile {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction:row;
+        flex-direction: row;
         margin-left: 15px;
         background-color: white;
         border: black 1px solid;
-        width:max-content;
-        height:99%;
+        width: max-content;
+        height: 99%;
         border-radius: 30px;
     }
-    img{
+
+    img {
         width: inherit;
         height: inherit;
         border-radius: 50%;
         margin: 5px;
     }
-    
 </style>
 <video autoplay loop muted>
     <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
@@ -160,7 +184,7 @@
         <div id="" class="navbar-nav container-fluid d-flex justify-content-end">
             <ul class="nav container-fluid w-100 d-flex justify-content-end d-none d-lg-flex">
                 <li class="nav-item">
-                    <a  onclick="getNewPassword()">New Password</a>
+                    <a onclick="getNewPassword()">New Password</a>
                 </li>
                 <li class="nav-item">
                     <a onclick="getListedAllPassWord()">my passwords</a>
@@ -176,14 +200,18 @@
                 <li class="nav-item">
                     <button class="others-button" onclick="getSignup()"> Sign Up</button>
                 </li>
+                <li>
+                    <button id="logout" class="others-button" onclick="getLogout()">Logout</button>
+                </li>
             </ul>
         </div>
 
     </div>
 </nav>
-<section id="section">  
+<section id="section">
     <div id="first-section">
         <div>
+            <h3 id="erreur">{{erreur}}</h3><br><h3 id="message">{{message}}</h3>
             <h1>Take control of your digital security with our password manager</h1>
         </div>
         <div>
@@ -195,6 +223,7 @@
         <div class="container" id="statistic-container">
             <p>ici nous allons afficher les statistiques des utilisateurs</p>
         </div>
+        <!--
         <div class="container" id="list-password">
             <ul>
                 
@@ -204,7 +233,8 @@
             <ul>
                 
             </ul>
-        </div>
+        </div>-->
+
         <div class="container" id="notice-container">
             <h2>Bienvenue !</h2>
             <p>Merci d'avoir choisi notre application de gestion de mots de passe. Ce guide vous aidera à naviguer
@@ -213,16 +243,19 @@
     </div>
 </section>
 <script>
-    function getLogin(){
-        window.location.href ='/login';
+    function getLogin() {
+        window.location.href = '/login';
     }
-    function getSignup(){
-        window.location.href ='/signup';
+    function getSignup() {
+        window.location.href = '/signup';
     }
-   function getNewPassword(){
-    window.location.href = '/newpassword';
-   }
-   function getListedAllPassWord(){
-    window.location.href = '/listedallpassword';
-   }
+    function getLogout() {
+        window.location.href = '/logout';
+    }
+    function getNewPassword() {
+        window.location.href = '/newpassword';
+    }
+    function getListedAllPassWord() {
+        window.location.href = '/listedallpassword';
+    }
 </script>

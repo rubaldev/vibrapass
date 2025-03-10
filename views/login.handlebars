@@ -17,7 +17,7 @@
         justify-content: center;
         align-items: center;
         width: 50vw;
-        height: 50vh;
+        height: 65vh;
         padding: 10px;
         border: none;
         border-radius: 35px;
@@ -25,7 +25,7 @@
 
     .input-container {
         position: relative;
-        margin: 20px;
+        margin: 5px;
     }
 
     .input-container input {
@@ -50,6 +50,40 @@
         object-fit: cover;
         z-index: -1;
     }
+
+    #modifiedPassWord,
+    a {
+        padding: 10px;
+        font-weight: inherit;
+        font-size: small;
+        text-align: end;
+    }
+
+    #but {
+        border: none;
+        background-color: transparent;
+        color: blue;
+        font-style: italic;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #but:hover {
+        color: white;
+        text-decoration: underline;
+        transition-delay: 100ms;
+        font-size: 15px;
+    }
+
+    #message {
+        color: rgb(133, 233, 133);
+        font-size: large;
+    }
+
+    p {
+        color: rgb(216, 117, 36);
+        font-size: large;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 </style>
 <video autoplay loop muted>
     <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
@@ -58,6 +92,7 @@
 <div id="principale" class="shadow">
     <form action="/login" method="post">
         <div class="d-flex flex-column align-items-center justify-content-center ">
+            <p id="erreur">{{erreur}}</p>
             <div class="input-container mb-3 d-flex flex-column align-items-center">
                 <label for="email" class="form-label">Adresse email</label>
                 <img src="/font/téléchargement.jpg" alt="">
@@ -75,5 +110,25 @@
             <button type="reset" class="btn bg-white px-3 py-2 rounded-4 shadow">Tout effacer</button>
             <button type="submit" class="btn btn-primary px-4 py-2 rounded-4 shadow">Envoyer</button>
         </div>
+        <div id="modifiedPassWord">
+            <button id="but" type="button" onclick="getModifyPass()">mot de passe oublier ?</button>
+        </div>
+        <span id="message">{{message}}</span>
     </form>
 </div>
+
+<script>
+    function getModifyPass() {
+        window.location.href = "/setPassWord"
+    }
+    window.onload = () => {
+        function getAlert() {
+            const notify = document.getElementById('erreur')||document.getElementById('message')
+            if(notify.textContent.length!=0){
+                alert(notify.textContent)
+            }
+        }
+        getAlert()
+    }
+
+</script>
