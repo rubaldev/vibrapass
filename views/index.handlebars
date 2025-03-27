@@ -1,5 +1,10 @@
 <style>
-    body {}
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #000;
+        color: white;
+    }
 
     video {
         position: absolute;
@@ -13,99 +18,165 @@
 
     #content {
         display: flex;
-        width: 100vw;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
         position: relative;
         z-index: 1;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    #progress {
-        margin-top: 90px;
-        width: 30%;
-        background-color: #ddd;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-    #progress-bar {
-        height: 30px;
-        width: 1%;
-        background-color: #4d62ea;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 0 20px;
         text-align: center;
-        line-height: 30px;
-        color: white;
-        transition: width 0.1s;
-    }
-
-    #button-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 50%;
     }
 
     p {
-        color: white;
         font-size: 1.5rem;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    #button-get-start {
-        width: 11%;
-        height: 40px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        max-width: 80%;
         color: white;
-        background-color: #4d62ea;
-        border: none;
-        border-radius: 20px;
     }
-</style>
-<video autoplay loop muted>
-    <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne prends
-    pas en charge le type de video
-</video>
-<div id="content">
-    <div id="progress">
-        <div id="progress-bar">1%</div>
-    </div>
-    <div id="button-container">
-        <p id="text-home">All your passwords in one secure place</p>
-        <button id="button-get-start" type="button" onclick="informConnected()">Get started</button>
-    </div>
-</div>
-<script>
-    let progress = 1;
-    let index = 1;
-    const couleurs = ["#4d62ea", "#ddd"];
-    const progressBar = document.getElementById('progress-bar');
-    const textHome = document.getElementById('text-home');
 
-    function updateProgress() {
-        if (progress <= 100) {
-            progressBar.style.width = progress + '%';
-            progressBar.textContent = progress + '%';
-            progress++;
-            setTimeout(updateProgress, 100);
+    .button {
+        width: 200px;
+        height: 45px;
+        color: white;
+        background-color: #ff5722;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: #3a50c3;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .button {
+            width: 70%;
         }
-        else {
-            informConnected();
+
+        p {
+            font-size: 1.2rem;
+            max-width: 90%;
         }
     }
-    function updateTextHome() {
-        textHome.style.color = couleurs[index];
-        index = (index + 1) % couleurs.length;
-        setTimeout(updateTextHome, 1500)
+
+    @media (max-width: 480px) {
+        .button {
+            width: 80%;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+    }
+    .modal-body {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+        color: black !important;
+        /* Assurez-vous que la couleur du texte est lisible */
+    }
+    .modal-body p {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+        font-size: 18px;
+        color: black;
+        font-family:Arial;
+        /* Assurez-vous que la couleur du texte est lisible */
     }
     
-    function informConnected() {
-        window.location.href = 'home';
-    }
-    updateProgress();
-    updateTextHome();
+</style>
 
-</script>
+<video autoplay loop muted>
+    <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">
+    Votre navigateur ne prend pas en charge la vidéo.
+</video>
+
+<div id="content">
+    <p>Bienvenue sur notre plateforme sécurisée pour gérer tous vos mots de passe.</p>
+    <p>Veuillez choisir l'une des options ci-dessous pour continuer.</p>
+
+    <button class="button" onclick="window.location.href = 'login';">Se connecter</button>
+    <button class="button" onclick="window.location.href = 'signup';">S'inscrire</button><span>Vous pouvez lire le notice en cliquant <a href="#" data-toggle="modal" data-target="#noticeModal">ici</a>.</p></span>
+   
+</div>
+<!-- Modal de la Notice -->
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noticeModalLabel">Notice d'utilisation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Bienvenue sur notre gestionnaire de mots de passe</h3>
+                <p>Notre application vous permet de gérer vos mots de passe de manière sécurisée, tout en vous offrant
+                    une interface simple à utiliser.</p>
+
+                <h4>Les pages de l'application :</h4>
+                <ul>
+                    <li><strong>Page d'accueil :</strong> C'est la première page que vous voyez après vous être inscrit
+                        ou connecté. Vous pouvez y voir les fonctionnalités disponibles de l'application.</li>
+                    <li><strong>Mes mots de passe :</strong> Cette page vous permet de consulter la liste de tous vos
+                        mots de passe enregistrés.</li>
+                    <li><strong>Ajouter un mot de passe :</strong> Ici, vous pouvez ajouter un nouveau mot de passe à
+                        gérer. Vous devez spécifier le site, le nom d'utilisateur et le mot de passe associé.</li>
+                    <li><strong>Connexion :</strong> Pour accéder à vos mots de passe, vous devez vous connecter avec
+                        votre identifiant et votre mot de passe.</li>
+                    <li><strong>Inscription :</strong> Si vous êtes un nouvel utilisateur, vous devez vous inscrire pour
+                        créer un compte et commencer à utiliser l'application.</li>
+                </ul>
+
+                <h4>Réinitialisation de votre mot de passe :</h4>
+                <p>Si vous oubliez votre mot de passe, nous avons mis en place une procédure de réinitialisation
+                    sécurisée :</p>
+                <ul>
+                    <li>Lorsque vous demandez à réinitialiser votre mot de passe, nous vous envoyons un e-mail contenant
+                        un lien pour réinitialiser votre mot de passe.</li>
+                    <li>En suivant ce lien, vous pourrez créer un nouveau mot de passe et l'utiliser pour vous connecter
+                        à votre compte.</li>
+                    <li>Une fois votre mot de passe réinitialisé, vous pourrez revenir sur le site, vous connecter et
+                        gérer vos mots de passe comme vous le souhaitez.</li>
+                </ul>
+
+                <h4>Gestion de vos mots de passe :</h4>
+                <p>Sur notre plateforme, vous avez la possibilité de :</p>
+                <ul>
+                    <li><strong>Ajouter un mot de passe :</strong> Vous pouvez enregistrer de nouveaux mots de passe en
+                        toute sécurité.</li>
+                    <li><strong>Modifier un mot de passe :</strong> Vous pouvez également modifier un mot de passe
+                        existant.</li>
+                    <li><strong>Supprimer un mot de passe :</strong> Si vous n'avez plus besoin d'un mot de passe, vous
+                        pouvez facilement le supprimer de votre liste.</li>
+                </ul>
+
+                <h4>Accès aux autres pages :</h4>
+                <p>Pour accéder à toutes les fonctionnalités de notre site, vous devez soit vous inscrire, soit vous
+                    connecter. Nous ne permettons l'accès aux pages protégées qu'aux utilisateurs enregistrés et
+                    connectés.</p>
+
+                <h4>Nos services :</h4>
+                <p>Nous sommes heureux de vous annoncer que nos services sont entièrement gratuits. Vous pouvez utiliser
+                    toutes les fonctionnalités de notre application sans frais.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Scripts nécessaires pour le modal -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

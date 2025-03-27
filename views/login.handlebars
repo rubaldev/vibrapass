@@ -6,39 +6,66 @@
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: large;
+        font-size: 16px;
         font-family: Arial, Helvetica, sans-serif;
         background-color: rgba(0, 0, 0, 0.5);
+        margin: 0;
     }
 
     #principale {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(65, 64, 64, 0.9);
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 50vw;
-        height: 65vh;
-        padding: 10px;
-        border: none;
-        border-radius: 35px;
+        width: 90%;
+        max-width: 500px;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        position: relative;
     }
 
     .input-container {
         position: relative;
-        margin: 5px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .input-container label {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #fff;
+        text-align: left;
     }
 
     .input-container input {
-        padding-left: 40px;
+        width: 100%;
+        padding: 12px 15px;
+        padding-left: 45px;
+        /* L'espace pour les icônes */
+        border: none;
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .input-container input:focus {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 1px solid #4d62ea;
+        box-shadow: 0 0 8px rgba(77, 98, 234, 0.5);
     }
 
     .input-container img {
-        width: 30px;
-        height: 30px;
+        width: 24px;
+        height: 24px;
         position: absolute;
-        left: 8px;
-        top: 39px;
-
+        left: 15px;
+        top: 18px;
+        z-index: 1;
     }
 
     video {
@@ -57,78 +84,203 @@
         font-weight: inherit;
         font-size: small;
         text-align: end;
+        color: #4d62ea;
     }
 
     #but {
         border: none;
         background-color: transparent;
-        color: blue;
+        color: #4d62ea;
         font-style: italic;
-        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
     }
 
     #but:hover {
         color: white;
         text-decoration: underline;
-        transition-delay: 100ms;
-        font-size: 15px;
     }
 
     #message {
         color: rgb(133, 233, 133);
-        font-size: large;
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 10px;
     }
 
     p {
         color: rgb(216, 117, 36);
-        font-size: large;
+        font-size: 1rem;
         font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+    }
+
+    .container-fluid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    button {
+        width: 48%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    button[type="reset"] {
+        background-color: #f0f0f0;
+        color: #333;
+        border: none;
+    }
+
+    button[type="submit"] {
+        background-color: #4d62ea;
+        color: white;
+        border: none;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    button[type="reset"]:hover {
+        background-color: #e0e0e0;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #3a4fb0;
+    }
+
+    #avoircompte {
+        color: white;
+        font-style: italic;
+    }
+
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        #principale {
+            width: 90%;
+            height: auto;
+            padding: 15px;
+        }
+
+        .input-container input {
+            padding-left: 35px;
+        }
+
+        .container-fluid {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .notification {
+        position: fixed;
+        top: 15px;
+        left: 35%;
+        z-index: 1050;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        width: 30rem;
+    }
+    #fermer{
+        width: 2px;
+        height: 2px;
+        border-radius: 0px;
+        background-color: transparent;
+        border: none;
+    }
+    #btn{
+        background-color: #ff5722;
+    }
+    #btn:hover{
+        background-color: #ed3f0a;
+        color: white;
     }
 </style>
 <video autoplay loop muted>
     <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
     prends pas en charge le type de video
 </video>
-<div id="principale" class="shadow">
+<div id="principale" class="shadow container-fluid">
     <form action="/login" method="post">
         <div class="d-flex flex-column align-items-center justify-content-center ">
-            <p id="erreur">{{erreur}}</p>
             <div class="input-container mb-3 d-flex flex-column align-items-center">
                 <label for="email" class="form-label">Adresse email</label>
-                <img src="/font/téléchargement.jpg" alt="">
+
                 <input type="email" id="email" name="email" class="form-control rounded-4 email"
                     aria-describedby="emailHelp" placeholder="Votre email" required>
             </div>
             <div class="input-container mb-3 d-flex flex-column align-items-center">
                 <label for="password" class="form-label">Password</label>
-                <img src="/font/téléchargement (1).jpg" alt="">
+
                 <input type="password" id="password" name="password" class="form-control rounded-4 password"
                     placeholder="Votre mot de passe" required>
             </div>
         </div>
         <div class="container-fluid d-flex justify-content-center align-content-center gap-2">
-            <button type="reset" class="btn bg-white px-3 py-2 rounded-4 shadow">Tout effacer</button>
-            <button type="submit" class="btn btn-primary px-4 py-2 rounded-4 shadow">Envoyer</button>
+            <button type="reset" class="btn px-3 py-2 rounded-4 shadow">Tout effacer</button>
+            <button type="submit" id="btn" class="btn px-4 py-2 rounded-4 shadow">Envoyer</button>
         </div>
         <div id="modifiedPassWord">
+            <span id="avoircompte">Vous n'avez pas de compte?</span><a onclick="getSignup()">créer un compte</a>
             <button id="but" type="button" onclick="getModifyPass()">mot de passe oublier ?</button>
         </div>
-        <span id="message">{{message}}</span>
     </form>
+</div>
+<div class="alert alert-danger rounded-5 notification" role="alert" id="notification" style="display: none;">
+    <strong id="notification-title"></strong><br>
+    <p id="notification-message"></p>
+    <p id="notification-messageErreur">{{erreur}}</p>
+    <p id="notification-messageSucces">{{message}}</p>
+    <button id="fermer" type="button" class="close" onclick="hideNotification()"><span>X</span></button>
 </div>
 
 <script>
+    function showNotification(type, messages) {
+        const notification = document.getElementById('notification');
+        const title = document.getElementById('notification-title');
+        const messageElement = document.getElementById('notification-message');
+
+        title.textContent = type === 'success' ? 'Succès' : 'Erreur';
+        messageElement.textContent = messages;
+        notification.className = `alert notification alert-${type}`
+        notification.style.display = 'block'
+    }
+
+    window.onload = function () {
+        var erreur = document.getElementById('notification-messageErreur');
+        var success = document.getElementById('notification-messageSucces');
+
+        if (erreur.textContent.length > 4) {
+            showNotification('danger', erreur.textContent)
+            erreur.textContent = ''
+        }
+        if (success.textContent.length > 4) {
+            showNotification('success', success.textContent)
+            success.textContent = ''
+        }
+    };
+    function hideNotification() {
+        document.getElementById('notification').style.display = 'none';
+    }
     function getModifyPass() {
         window.location.href = "/setPassWord"
     }
-    window.onload = () => {
-        function getAlert() {
-            const notify = document.getElementById('erreur')||document.getElementById('message')
-            if(notify.textContent.length!=0){
-                alert(notify.textContent)
-            }
-        }
-        getAlert()
+    function getSignup() {
+        window.location.href = "/signup"
     }
 
 </script>

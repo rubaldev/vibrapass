@@ -1,102 +1,233 @@
-<style>
-    <style>body {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: large;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    #principale {
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100vw;
-        height: 100vh;
-        padding: 10px;
-        border: none;
-      
-        color:white;
-    }
+<!DOCTYPE html>
+<html lang="fr">
 
-    video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-    }
-    #message{
-        margin-top: 1rem;
-        margin-left:12rem;
-        font-size: 15px;
-        font-family: Arial, Helvetica, sans-serif;
-        color: rgb(233, 97, 52);
-    }
-</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background-color: rgba(0, 0, 0, 0.6);
+            margin: 0;
+        }
 
-<video autoplay loop muted>
-    <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">votre navigateur ne
-    prends pas en charge le type de video
-</video>
-<div id="principale">
-    <div id="section">
-        <div class=" w-60 h-90  d-flex justify-content-center align-items-center px-5">
-            <div class="w-100 h-100 d-flex justify-content-center align-items-center ms-5">
-                <form action="/signup"
-                    class="container-fluid w-100 h-100 rounded-4 px-4 py-5 d-flex flex-column justify-content-center shadow"
-                    method="post">
-                    <div class="container-fluid">
-                        <div class="d-lg-flex align-items-start gap-2">
-                            <div class="mb-3 d-flex flex-column align-items-start">
-                                <label for="nom" class="form-label">Nom</label>
-                                <input type="text" id="nom" class="form-control rounded-4 nom" placeholder="Votre nom"
-                                    name="nom">
-                            </div>
-                            <div class="mb-3 d-flex flex-column align-items-start"> <label for="postnom"
-                                    class="form-label">PostNom</label>
-                                <input type="text" id="postnom" class="form-control rounded-4 postnom"
-                                    placeholder="Votre postnom" name="postnom">
-                            </div>
-                            <div class="mb-3 d-flex flex-column align-items-start"> <label for="prenom"
-                                    class="form-label">Prénom</label>
-                                <input type="text" id="prenom" class="form-control rounded-4 prenom"
-                                    placeholder="Votre prénom" name="prenom">
-                            </div>
+        #principale {
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #section {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #f8f9fa;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #fff;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn {
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #f54008;
+        }
+
+        .btn-reset {
+            background-color: white;
+            color: #ff5722;
+            border: none;
+        }
+
+        .btn-reset:hover {
+            background-color: #e6e6e6;
+            color: #f78a68;
+        }
+
+        #link {
+            color: blue;
+            text-decoration: underline;
+            font-style: italic;
+        }
+
+        .notification {
+            position: fixed;
+            top: 15px;
+            left: 35%;
+            z-index: 1050;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            width: 30rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #section {
+                width: 100%;
+                height: max-content;
+                margin-top: 10rem;
+            }
+
+            .d-flex {
+                flex-direction: column;
+            }
+
+            .w-45 {
+                width: 100%;
+            }
+
+            .btn {
+                padding: 12px 20px;
+            }
+
+            #message {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay loop muted>
+        <source src="/font/6917189_Motion Graphics_Motion Graphic_3840x2160.mp4" type="video/mp4">
+        Votre navigateur ne prend pas en charge la vidéo.
+    </video>
+
+    <div id="principale">
+        <div id="section">
+            <form action="/signup" method="POST" class="container-fluid">
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex justify-content-between">
+                        <div class="w-45">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" id="nom" name="nom" class="form-control" placeholder="Votre nom"
+                                required>
                         </div>
-                        <div class="d-lg-flex align-items-start gap-2">
-                            <div class="mb-3 d-flex flex-column align-items-start">
-                                <label for="email" class="form-label">Adresse email</label>
-                                <input type="email" id="email" name="email" class="form-control rounded-4 email"
-                                    aria-describedby="emailHelp" placeholder="Votre email">
-                            </div>
-                            <div class="mb-3 d-flex flex-column align-items-start">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" id="password" name="password"
-                                    class="form-control rounded-4 password" placeholder="Votre mot de passe">
-                            </div>
-                            <div class="mb-3">
-                                <label for="sexe" class="form-label">sexe</label><br>
-                                <input type="text" id="sexe" name="sexe" class="form-control rounded-4">
+                        <div class="w-45">
+                            <label for="postnom" class="form-label">PostNom</label>
+                            <input type="text" id="postnom" name="postnom" class="form-control"
+                                placeholder="Votre postnom" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="w-45">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Votre prénom"
+                                required>
+                        </div>
+                        <div class="w-45">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Votre email"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="w-45">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                placeholder="Votre mot de passe" required>
+                        </div>
+                        <div class="w-45">
+                            <label class="form-label">Sexe</label><br>
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <input type="radio" id="sexe_m" name="sexe" value="M" required>
+                                    <label for="sexe_m" class="form-label">Masculin</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="sexe_f" name="sexe" value="F" required>
+                                    <label for="sexe_f" class="form-label">Féminin</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container-fluid d-flex justify-content-center align-content-center gap-4">
-                        <button type="reset" class="btn bg-white px-3 py-2 rounded-4 shadow">Tout effacer</button>
-                        <button type="submit" class="btn btn-primary px-4 py-2 rounded-4 shadow"
-                            onclick="getValuForm()">Envoyer</button>
-                    </div>
-                    <span id="message">{{message}}</span>
-                </form>
-            </div>
 
+                    <div class="d-flex justify-content-center gap-4 mt-4">
+                        <button type="reset" class="btn btn-reset">Tout effacer</button>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </div>
+
+                </div>
+                <div id="link" class=" ml-7 m-2">
+                    <a onclick="getLogin()">J'ai déjà un compte</a>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+    <div class="alert alert-danger rounded-4 notification" id="notification" style="display: none;">
+        <strong>Notification</strong><br>
+       <p id="message">{{message}}</p> 
+        <button type="button" class="close" onclick="hideNotification()"><span>X</span></button>
+    </div>
+</body>
+
+</html>
+<script>
+    const message = document.getElementById('message');
+    window.onload = function(){
+        if(message.textContent.length !=0){
+            document.getElementById('notification').style.display = 'block';
+        }
+    }
+
+    function hideNotification() {
+        document.getElementById('notification').style.display = 'none';
+    }
+
+    function getLogin() {
+        window.location.href = "/Login"
+    }
+</script>
 <script src="../public/scrypte/signup.js"></script>
