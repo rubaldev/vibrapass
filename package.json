@@ -4,13 +4,14 @@
   "main": "serveur.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon serveur.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.3",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "chart.js": "^4.4.8",
