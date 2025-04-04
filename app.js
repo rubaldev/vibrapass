@@ -99,6 +99,74 @@ app.get('/api/listedallpassword', async (req, res) => {
     }
 });
 
+
+app.post('/signup', async (req, res) => {
+    try {
+        const { email, password, name, secondname, christname, sexe } = req.body;
+
+        // Validation du mot de passe
+        if (password.length < 9) {
+            return res.render('signup', {
+                title: 'vibrapass-signup',
+                message: 'Le mot de passe doit avoir 9 caractères ou plus'
+            });
+        }
+
+        // Crée un utilisateur via Supabase Auth
+        const { user, error: authError } = await supabase.auth.signUp({
+            email: email,
+            password: password
+        });
+
+        // Si une erreur se produit pendant l'inscription
+        if (authError) {
+            // Log de l'erreur détaillée
+            console.error('Erreur d\'authentification:', authError);
+            return res.status(400).json({ message: authError.message });
+        }
+
+        // Log pour voir la réponse de Supabase après signUp
+        console.log('Réponse de Supabase après signUp:', { user, authError });
+
+        // Si l'utilisateur n'est pas créé correctement, loguer un message et renvoyer une erreur
+        if (!user) {
+            console.error('Aucun utilisateur trouvé après signUp');
+            return res.status(400).json({ message: 'Utilisateur non créé correctement' });
+        }
+
+        // Essayer de se connecter immédiatement après l'inscription
+        const { session, error: signInError } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        // Log de la réponse de Supabase après signIn
+        console.log('Réponse de Supabase après signIn:', { session, signInError });
+
+        // Si une erreur se produit lors de la connexion immédiate
+        if (signInError) {
+            console.error('Erreur lors de la connexion immédiate :', signInError.message);
+            return res.status(400).json({ message: signInError.message });
+        }
+
+        // Vérifie si l'utilisateur est bien connecté et récupère l'ID
+        if (session && session.user && session.user.id) {
+            console.log('Utilisateur connecté avec ID :', session.user.id);
+            return res.json({ userId: session.user.id });
+        } else {
+            console.error('Aucun utilisateur trouvé après la connexion');
+            return res.status(400).json({ message: 'Impossible de récupérer l\'ID de l\'utilisateur' });
+        }
+
+    } catch (err) {
+        // En cas d'erreur serveur, log l'erreur complète
+        console.error('Erreur lors de l\'inscription:', err);  // Log complet de l'erreur
+        res.status(500).json({ message: 'Erreur interne du serveur', error: err.message });
+    }
+});
+
+
+/*
 // route pour recuperer dans le signup
 app.post('/signup', async (req, res) => {
     try {
@@ -113,19 +181,24 @@ app.post('/signup', async (req, res) => {
         }
 
         // Crée un utilisateur via Supabase Auth
-        const { user, error } = await supabase.auth.signUp({
-            email,
-            password,
+        const { user, error: authError } = await supabase.auth.signUp({
+            email: email,
+            password: password
         });
-
-        if (error) {
+        
+        console.log(user.id)
+        res.json(user.id)
+        return true
+        if (authError) {
+            console.error('Erreur d\'inscription : ', authError.message);
             throw error;
         }
-        console.log(user)
+        
         // Enregistre les détails dans la table 'user'
         const { data, error: dbError } = await supabase
             .from('utilisateur') // Nom de la table 'user'
             .insert([{
+                id_utilisateur: user.UID,
                 name,
                 secondname,
                 christname,
@@ -141,7 +214,7 @@ app.post('/signup', async (req, res) => {
         }
 
         // Associer l'ID utilisateur à la session
-        req.session.id_user = utilisateur.id;
+        req.session.id_user = data.id;
 
         // Renvoyer une réponse à l'utilisateur
         res.render('home', {
@@ -155,7 +228,7 @@ app.post('/signup', async (req, res) => {
         res.status(500).send(error.message);  // Envoi d'une erreur serveur
     }
 });
-
+*/
 // route pour recuperer la page home
 app.get('/home', (req, res) => {
     res.render('home', {
@@ -164,51 +237,97 @@ app.get('/home', (req, res) => {
     })
 })
 //route pour recuperer dans login
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
     try {
         const { email, password } = req.body;
-        const { data, error } = await supabase
-            .from('utilisateur') // Table 'users' dans Supabase
-            .select('*') // Sélectionne toutes les colonnes
-            .eq('email', email) // Filtrer par email
-            .eq('password', password)
-            .single(); // Récupère un seul utilisateur
+        // Authentification via le service 'auth' de Supabase
+        const { data, error } = supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
         if (error) {
             return res.render('login', {
                 title: 'vibrapass-login',
-                erreur: 'Adresse ou mot de passe incorrect',
+                erreur: `Adresse ou mot de passe incorrect'${error}'`,
+            });
+        } else {
+            // Si l'authentification réussit, tu peux récupérer l'ID de l'utilisateur
+            req.session.id_user = auth.data.ID;
+
+            // Rendu de la page d'accueil avec un message de succès
+            res.render('home', {
+                title: 'vibrapass-home',
+                message: `Connecté avec succès '${auth.data.id}'`,
             });
         }
-        req.session.id_user = data.id;
-        res.render('home', {
-            title: 'vibrapass-home',
-            message: 'Connecté avec succès',
-        });
+
+
     } catch (error) {
         res.render('login', {
             title: 'vibrapass-login',
-            erreur: 'Adresse Email ou mot de passe incorrect',
+            erreur: `Une erreur est survenue. Veuillez réessayer plus tard.   '${error}'`,
         });
     }
 });
 
 
-// route pour aller dans la page de modification de mot de passe et envoyer mail
+// route pour aller dans la page de reinitialisation de mot de passe et envoyer mail
 app.post('/setPassWord', async (req, res) => {
     const email = req.body.email;
-    const { error } = await supabase.auth.api
-        .resetPasswordForEmail(email);
-
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
     if (error) {
         res.render('setPassWord', {
             title: 'Réinitialisation de mot de passe',
             message: 'Adresse email non trouvée',
         });
     } else {
-        res.render('setPassWord', {
-            title: 'Réinitialisation de mot de passe',
-            message: 'Email de réinitialisation envoyé',
-        });
+        res.send(`
+            <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Succes d'envoi d'Email</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f9;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                        }
+                        .container {
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #fff;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            max-width: 600px;
+                            width: 100%;
+                        }
+                        h1 {
+                            color: #e74c3c;
+                            font-size: 2rem;
+                            margin-bottom: 15px;
+                        }
+                        h4 {
+                            font-size: 1.2rem;
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1><i class="fas fa-exclamation-circle"></i> Email contenant un Lien de Reinitialisation Envoyé</h1>
+                        <h4>Vous avez reçu un Email contenant le Lien de reinitialisation de votre mot de passe cliquer sur ce lien cela vous amenera vers une page où vous allez introduir le nouveau mot de passe.</h4>
+                    </div>
+                </body>
+            </html>
+        `);
     }
 });
 
@@ -216,14 +335,14 @@ app.post('/setPassWord', async (req, res) => {
 app.post('/modifyPass', async (req, res) => {
     const { newPassword, email, oldPassword, website } = req.body;
 
-    if (req.session.id_user) {
+    if (req.session.id_user.length != 0) {
         // Vérifie si l'email et le mot de passe (ancien) existent
         const { data, error } = await supabase
             .from('template')
             .select('*')
             .eq('email', email)
             .eq('website', website)
-            .eq('user_id', req.session.id_user);  // Vérifier que c'est l'utilisateur connecté
+            .eq('id_user', req.session.id_user);  // Vérifier que c'est l'utilisateur connecté
 
         if (error) {
             return res.json({
@@ -232,19 +351,19 @@ app.post('/modifyPass', async (req, res) => {
             });
         }
 
-        if (data.length !== 0 && data[0].password === oldPassword) {
+        if (data.length !== 0 && data[0].passwordsite === oldPassword) {
             // Mise à jour du mot de passe
             const { updateData, updateError } = await supabase
                 .from('template')
-                .update({ password: newPassword }) // Remplace 'password' par la colonne réelle du mot de passe
+                .update({ passwordsite: newPassword }) // Remplace 'password' par la colonne réelle du mot de passe
                 .eq('email', email)
                 .eq('website', website)
-                .eq('user_id', req.session.id_user);
+                .eq('id_user', req.session.id_user);
 
             if (updateError) {
                 return res.json({
                     success: false,
-                    message: updateError.message
+                    message: 'modification de mot de passe echoué'
                 });
             }
 
@@ -268,15 +387,14 @@ app.post('/modifyPass', async (req, res) => {
 //supprimer un mot de passe du template
 app.post('/delete', async (req, res) => {
     const { email, password, website } = req.body;
-
-    if (req.session.id_user) {
+    if (req.session.id_user.length != 0) {
         // Vérifie si l'email, le mot de passe et le site existent
         const { data, error } = await supabase
             .from('template')
             .select('*')
             .eq('email', email)
             .eq('website', website)
-            .eq('user_id', req.session.id_user);
+            .eq('id_user', req.session.id_user);
 
         if (error) {
             return res.json({
@@ -285,19 +403,19 @@ app.post('/delete', async (req, res) => {
             });
         }
 
-        if (data.length !== 0 && data[0].password === password) {
+        if (data.length !== 0 && data[0].passwordsite === password) {
             // Supprimer le mot de passe
             const { deleteData, deleteError } = await supabase
                 .from('template')
                 .delete()
                 .eq('email', email)
                 .eq('website', website)
-                .eq('user_id', req.session.id_user);
+                .eq('id_user', req.session.id_user);
 
             if (deleteError) {
                 return res.json({
                     success: false,
-                    message: deleteError.message
+                    message: 'erreur lors de la suppression'
                 });
             }
 
@@ -433,7 +551,23 @@ app.get('/reset', (req, res) => {
 app.post('/otherPassWord', async (req, res) => {
     const { password } = req.body;
     const email = req.session.email;
+    const updatePassword = async (newPassword, accessToken) => {
+        const { data, error } = await supabase.auth.api.updateUser(accessToken, {
+            password: newPassword,
+        });
 
+        if (error) {
+            console.error('Erreur lors de la mise à jour du mot de passe:', error.message);
+        } else {
+            console.log('Mot de passe mis à jour avec succès:', data);
+            // L'utilisateur peut maintenant se connecter avec le nouveau mot de passe
+        }
+    };
+
+    // Exemple d'appel avec un nouveau mot de passe et le token d'accès
+    updatePassword('new-password123', 'access-token-from-url');
+
+    /*
     try {
         // Ajouter un nouveau mot de passe dans la table 'passwords'
         const { data, error } = await supabase
@@ -476,7 +610,7 @@ app.post('/otherPassWord', async (req, res) => {
             title: 'vibrapass-login',
             erreur: 'Connectez-vous avant d\'ajouter un nouveau mot de passe'
         });
-    }
+    }*/
 });
 
 app.get('/otherPassWord', (req, res) => {
@@ -496,7 +630,7 @@ app.get('/setPassWord', (req, res) => {
 app.post('/newpass', async (req, res) => {
     try {
         const { email, link, category, password } = req.body;
-        if (req.session.id_user.length =0) {
+        if (req.session.id_user.length = 0) {
             res.render('login', {
                 title: 'vibrapass-login',
                 erreur: 'Connectez-vous avant d\'ajouter un nouveau mot de passe'
